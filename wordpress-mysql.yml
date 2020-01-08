@@ -1,0 +1,81 @@
+#WORDPRESS REPLICATIONCONTROLLER.YML
+ 
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: wordpress-rc
+spec:
+ replicas: 3
+ selector:
+    app: wordpress
+ template:
+   metadata:
+      labels: 
+        app: wordpress
+   spec:
+     containers:
+     - name: wordpress
+       image: 2307297/wordpress-mysql
+       ports:
+       - containerPort: 80
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#WORDPRESS SERVICE.YML
+
+apiVersion: v1
+kind: Service
+metadata:
+   name: wordpress-svc
+   labels:
+      app: wordpress
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    NodePort:8000
+  selector:
+    app: wordpress
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+#MYSQL SERVICE.YML
+
+apiVersion: v1
+kind: Service
+metadata:
+      name: mysql-svc
+      labels:
+        app: mysql
+spec:
+   type: ClusterIP
+   ports:
+    - port: 3306
+   selector:
+       app: mysql
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#MYSQL REPLICATIONCONTROLLER.YML
+
+
+apiVersion: v1
+kind: ReplicationController
+metadata:
+   name: mysql-rc
+spec:
+  replicas: 1
+  selector:
+    labels:
+      app: mysql
+   template:
+     metadata:
+        labels:
+         app: mysql
+      spec:
+        containers:
+         -  name: mysql
+            image:
+            ports:
+            - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "somewordpress"
