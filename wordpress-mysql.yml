@@ -43,15 +43,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-      name: mysql-svc
+      name: mariadb-svc
       labels:
-        app: mysql
+        app: mariadb:10.3
 spec:
    type: ClusterIP
    ports:
     - port: 3306
    selector:
-       app: mysql
+       app: mariadb:10.3
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #MYSQL REPLICATIONCONTROLLER.YML
@@ -60,22 +60,22 @@ spec:
 apiVersion: v1
 kind: ReplicationController
 metadata:
-   name: mysql-rc
+   name: mariadb-rc
 spec:
   replicas: 1
   selector:
     labels:
-      app: mysql
+      app: mariadb:10.3
    template:
      metadata:
         labels:
-         app: mysql
+         app: mariadb:10.3
       spec:
         containers:
-         -  name: mysql
+         -  name: mariadb:10.3
             image:
             ports:
             - containerPort: 3306
         env:
         - name: MYSQL_ROOT_PASSWORD
-          value: "somewordpress"
+          value: "wordpress"
