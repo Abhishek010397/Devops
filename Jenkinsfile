@@ -18,7 +18,7 @@ node{
     
     stage('Push Docker Image'){
         withCredentials([string(credentialsId: 'DOKCER_HUB_PASSWORD', variable: 'DOKCER_HUB_PASSWORD')]) {
-          sh "docker login -u dockerhandson -p ${DOKCER_HUB_PASSWORD}"
+          sh "docker login -u 2307297 -p ${DOKCER_HUB_PASSWORD}"
         }
         sh 'docker push 2307297/jenkins-kubernetes'
      }
