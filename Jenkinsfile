@@ -13,14 +13,14 @@ node{
     
     
     stage('Build Docker Image'){
-        sh 'docker build -t dockerhandson/spring-boot-mongo .'
+        sh 'docker build -t 2307297/jenkins-kubernetes .'
     }
     
     stage('Push Docker Image'){
         withCredentials([string(credentialsId: 'DOKCER_HUB_PASSWORD', variable: 'DOKCER_HUB_PASSWORD')]) {
           sh "docker login -u dockerhandson -p ${DOKCER_HUB_PASSWORD}"
         }
-        sh 'docker push dockerhandson/spring-boot-mongo'
+        sh 'docker push 2307297/jenkins-kubernetes'
      }
      
      stage("Deploy To Kuberates Cluster"){
