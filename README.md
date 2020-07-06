@@ -41,10 +41,10 @@
            and click on secret text and add credentials such as password for DockerHub Account, provide an
            ID and paste the ID in the variable section & then click on generate pipeline script and copy the script)
            paste the script in the stage.
-   stage5:-       
-  # Choose Kubernetes Continuous Deploy Plugin for deploying Applications to K8s
-  Go to Jenkins->Manage Plugins->Available->Kubernetes Continuous Deploy->Select and Install.
-  Add kube config information in Jenkins Credentials as:-
-       Jenkins->Credentials->Select Kube Config->copy the kube config from the cluster.(Choose Enter Directly Method).
+           
+   stage5:- Choose Kubernetes Continuous Deploy Plugin for deploying Applications to K8s
+            Go to Jenkins->Manage Plugins->Available->Kubernetes Continuous Deploy->Select and Install.
+            Add kube config information in Jenkins Credentials as:-
+            Jenkins->Credentials->Select Kube Config->copy the kube config from the cluster.(Choose Enter Directly Method).
   
            
