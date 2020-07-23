@@ -1,0 +1,39 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+
+  - name: Clone Helm Chart
+    shell: |
+     #!/bin/bash
+     helm repo add gitlab https://charts.gitlab.io/
+
+  - name: Execute Helm Chart
+    shell: |
+     #!/bin/bash
+     export KUBECONFIG=~/.kube/config
+     helm install gitlab gitlab/gitlab --set global.hosts.domain=gitlab.gitlab.labcerebrone.com --set certmanager-issuer.email=me@gitlab.gitlab.labcerevrone.com --set gitlab-runner.install=false
+
+  - name: Retrive the IP Address
+    shell: |
+      #!/bin/bash
+      kubectl get ingress -lrelease=gitlab | awk 'NR == 3 {print $3}' 
+    register: shell_result
+
+  
+  - route53:
+      state: present
+      zone: gitlab.labcerebrone.com
+      record: '*.gitlab.labcerebrone.com'
+      type: CNAME
+      ttl: 360
+      value: "{{shell_result}}"
+
+  - name: Get the Sign In Token
+    shell: |
+     #!/bin/bash
+     kubectl get secret gitlab-gitlab-initial-root-password -ojsonpath='{.data.password}' | base64 --decode ; echo
+
+
+
+

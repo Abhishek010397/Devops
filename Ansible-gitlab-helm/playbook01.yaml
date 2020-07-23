@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+  
+  - name: Clone Helm Chart
+    shell: |
+    #!/bin/bash
+    helm repo add gitlab https://charts.gitlab.io
+
+  - name: Execute Kubectl commands
+    shell: |
+      #!/bin/bash
+      kubectl get secret gitlab-gitlab-runner-secret  -ojsonpath='{.data.runner-registration-token}' | base64 --decode ; echo
+    register: shell_result
+
+  - name: Execute Helm Chart
+    shell: |
+    #!/bin/bash
+    helm install gitlab-runner gitlab/gitlab-runner --set gitlabUrl=https://gitlab.gitlab.labcerebrone.com --set runnerRegistrationToken= "{{shell_result}}" --set privileged=true
+
+  
